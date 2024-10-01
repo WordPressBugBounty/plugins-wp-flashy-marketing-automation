@@ -1,0 +1,392 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Flashy\n"
+"POT-Creation-Date: 2021-11-14 11:42+0200\n"
+"PO-Revision-Date: 2022-12-27 12:03+0200\n"
+"Last-Translator: hello@cboxagency.com <hello@cboxagency.com>\n"
+"Language-Team: \n"
+"Language: he_IL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-KeywordsList: _;_e;__;esc_html__\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: core/elementor/form-action.php:33 core/elementor/form-action.php:98 flashy.php:960
+msgid "Flashy"
+msgstr "פלאשי"
+
+#: core/elementor/form-action.php:107
+#, php-format
+msgid "Your Flashy API key is missing, click here to add it <a href=\"%1$s\" target=\"_blank\">Add API Key</a>."
+msgstr "מפתח ה-API הבזק שלך חסר, לחץ כאן כדי להוסיף אותו <a href=\"%1$s\" target=\"_blank\">הוסף מפתח API</a> ."
+
+#: core/elementor/form-action.php:126
+msgid "List"
+msgstr "רשימה"
+
+#: core/elementor/form-action.php:132
+#, php-format
+msgid ""
+"Please make sure the form fields (inputs) are with the correct name on your Flashy account <a href=\"%1$s\" target=\"_blank\">Full "
+"Guide</a>."
+msgstr ""
+"נא לוודא שכל השדות מלאים עם השמות הנכונים שמוגדרים במערכת של פלאשי. למעבר למדריך לחץ <a href=\"%1$s\" target=\"_blank\">כאן</a>."
+
+#: core/process/wp-background-process.php:425
+#, php-format
+msgid "Every %d Minutes"
+msgstr "בכל %d דקות"
+
+#: flashy.php:776
+msgid "Changes has been successfully saved"
+msgstr "השינויים נשמרו בהצלחה"
+
+#: flashy.php:789
+msgid "The API key is wrong, please try again"
+msgstr "מפתח ה API שגוי, אנא נסה שנית"
+
+#: flashy.php:798
+msgid "The List ID is wrong, please try again"
+msgstr "מספר הרשימה שגוי, אנא נסה שנית"
+
+#: flashy.php:811
+msgid "The Flashy account ID has been saved."
+msgstr "החשבון נשמר בהצלחה."
+
+#: flashy.php:820
+msgid "The products successfully exported."
+msgstr "המוצרים יוצאו בהצלחה."
+
+#: flashy.php:833
+msgid "WooCommerce plugin is missing!"
+msgstr "לא מותקן פלאגין WooCommerce במערכת!"
+
+#: flashy.php:1090
+msgid "Choose a list"
+msgstr "בחר רשימה"
+
+#: flashy.php:1208 flashy.php:1635
+msgid "API Key"
+msgstr "מפתח API"
+
+#: flashy.php:1217
+msgid "Connect to Flashy"
+msgstr "התחבר אל פלאשי"
+
+#: flashy.php:1227
+msgid "How To Install"
+msgstr "תהליך ההתקנה"
+
+#: flashy.php:1232
+msgid "Find your API key at <a href='https://flashyapp.com/signin' target='_blank'>https://flashyapp.com</a> and save - That's it!"
+msgstr ""
+"מפתח ה API נמצא באתר: <a href='https://flashyapp.com/signin' target='_blank'>https://flashyapp.com</a>, יש לשמור את המפתח API וזהו "
+"- ההתקנה הסתיימה!"
+
+#: flashy.php:1248
+msgid "FLASHY CONNECTED"
+msgstr "פלאשי מחובר בהצלחה לחשבון"
+
+#: flashy.php:1250
+msgid "Go to dashboard"
+msgstr "הכנס למערכת הניהול"
+
+#: flashy.php:1258
+msgid "Subscribers List"
+msgstr "רשימת תפוצה"
+
+#: flashy.php:1274
+msgid ""
+"You must create a list in our platform. Click the following <a href='https://flashy.app/help/contact-management/how-to-create-a-"
+"list/'>link</a> for more information."
+msgstr ""
+"נא ליצור רשימה במערכת של פלאשי. למידע נוסף לחץ <a href='https://flashy.app/he/help/%d7%a0%d7%99%d7%94%d7%95%d7%9c-"
+"%d7%90%d7%a0%d7%a9%d7%99-%d7%a7%d7%a9%d7%a8/%d7%9b%d7%99%d7%a6%d7%93-%d7%9c%d7%99%d7%a6%d7%95%d7%a8-%d7%a8%d7%a9%d7%99%d7%9e%d7%aa-"
+"%d7%aa%d7%a4%d7%95%d7%a6%d7%94/'>כאן</a>"
+
+#: flashy.php:1276
+msgid "You must choose a subscriber list from the following options."
+msgstr "נא לבחור רשימת תפוצה."
+
+#: flashy.php:1282
+msgid "Save List"
+msgstr "שמירת רשימת התפוצה"
+
+#: flashy.php:1283 flashy.php:1531 flashy.php:1622 flashy.php:1645
+msgid "Last updated at: "
+msgstr "עודכן לאחרונה ב: "
+
+#: flashy.php:1295
+msgid "Settings"
+msgstr "הגדרות"
+
+#: flashy.php:1300
+msgid "Add Accept Marketing Checkbox"
+msgstr "הוסף צ׳קבוקס של אישור דיוור"
+
+#: flashy.php:1301
+msgid "Flashy can manage your subscription list by adding a checkbox to the pages you choose or you can use your own checkbox."
+msgstr "פלאשי יכול לאסוף עבורכם את אישור הלקוחות לקבל דואר פרסומי, נוסיף צ׳קבוקס לעמודים שתבחרו שבהם הלקוחות יוכלו לאשר."
+
+#: flashy.php:1308
+msgid "Add Flashy Checkbox"
+msgstr "הוספת צ׳קבוקס של פלאשי"
+
+#: flashy.php:1309
+msgid "We Have Our Own Checkbox"
+msgstr "יש לנו צ׳קבוקס משלנו"
+
+#: flashy.php:1320
+msgid "Where To Add Checkbox"
+msgstr "באיזה עמודים להוסיף אישור הצטרפות"
+
+#: flashy.php:1326
+msgid "Choose where you want to add Flashy checkbox"
+msgstr "בעמודים שתבחרו התווסף צ׳קבוקס שיאפשר למבקרים אצלכם לאשר דיוור פרסומי באמצעות צ׳קבוקס"
+
+#: flashy.php:1330
+msgid "On checkout page"
+msgstr "בעמוד תשלום"
+
+#: flashy.php:1335
+msgid "On signup page"
+msgstr "בעמוד פתיחת חשבון"
+
+#: flashy.php:1349
+msgid "Accept Marketing Text"
+msgstr "הטקסט שיופיע להצטרפות"
+
+#: flashy.php:1355
+msgid "Add a message for your customers before the checkbox."
+msgstr "הוסיפו הודעה מתאימה שתוצג ללקוחות לפני הצ'ק בוקס."
+
+#: flashy.php:1369
+msgid "Checkout Checkbox Position"
+msgstr "מיקום הצ'קבוקס בעמוד הצ'קאאוט "
+
+#: flashy.php:1375
+msgid "Choose where you want to position Flashy checkbox on the <b>checkout</b> page."
+msgstr "בחרו את המיקום בו יופיע הצ'קבוקס בעמוד הצ'קאאוט."
+
+#: flashy.php:1380
+msgid "After Order Notes"
+msgstr "לאחר רישומי הזמנה"
+
+#: flashy.php:1384
+msgid "On Review Order (Before Submit)"
+msgstr "בתצוגה מקדימה של ההזמנה (לפני השליחה)"
+
+#: flashy.php:1399
+msgid "Checkbox Name"
+msgstr "שם הצ׳קבוקס"
+
+#: flashy.php:1405
+msgid ""
+"If you have a checkbox on the checkout page that offers the customer to join your mailing list, you can subscribe him "
+"automatically. The name of the field on the checkout page they check must be filled."
+msgstr ""
+"אם יש לכם שדה בעמוד הרשמה / תשלום שמציע ללקוחות להצטרף לרשימת התפוצה - הזינו פה את שם השדה (name) כדי שהם הצטרפו אוטומטית לפלאשי - "
+"מומלץ להתייעץ עם המתכנת של האתר."
+
+#: flashy.php:1426
+msgid "Create Account For Guests"
+msgstr "יצירת חשבון בפלאשי לאורחים באתר"
+
+#: flashy.php:1427
+msgid ""
+"When a visitor places an order on the site <b><u>as a guest</u></b>, you can control whether or not to create an account for him "
+"in Flashy."
+msgstr "כשלקוח מבצע רכישה אצלכם כאורח באתר אתם יכולים להחליט האם לייצר לו חשבון בפלאשי או לא."
+
+#: flashy.php:1434 flashy.php:1571
+msgid "Yes"
+msgstr "כן"
+
+#: flashy.php:1435 flashy.php:1570
+msgid "No"
+msgstr "לא"
+
+#: flashy.php:1446
+msgid "When To Create Flashy Contact"
+msgstr "מתי ליצור איש קשר חדש בפלאשי"
+
+#: flashy.php:1447
+msgid "You can decide in when our plugin will create a new Flashy contact."
+msgstr "באפשרותכם לבחור באיזה מצב התוסף שלנו יצור איש קשר חדש בפלאשי."
+
+#: flashy.php:1454
+msgid "On User Creation & Purchase"
+msgstr "בכל פעם שנוצר לקוח באתר (הרשמה)"
+
+#: flashy.php:1455
+msgid "After Purchase Only"
+msgstr "רק במידה והלקוח ביצע רכישה"
+
+#: flashy.php:1476
+msgid "Context Information"
+msgstr "קונטקסט באירועים"
+
+#: flashy.php:1477
+msgid "Add contextual data to Flashy's events."
+msgstr "האם להוסיף קונטקסט לאירועים של פלאשי."
+
+#: flashy.php:1484
+msgid "Without Contextual Data"
+msgstr "ללא קונטקסט"
+
+#: flashy.php:1485
+msgid "Add Contextual Data"
+msgstr "הוסף קונטקסט לאירועים"
+
+#: flashy.php:1490 flashy.php:1530
+msgid "Save Changes"
+msgstr "שמור שינויים"
+
+#: flashy.php:1499
+msgid "When To Send Purchase Event"
+msgstr "מתי לדווח על רכישה לפלאשי"
+
+#: flashy.php:1500
+msgid "On thank you page - after customer completed payment. <br/> On order placed - before the checkout process completed."
+msgstr "בעמוד תודה רבה - לאחר שהלקוח ביצע תשלום.<br/>בעמוד הזמנה - לפני שבוצע תהליך התשלום."
+
+#: flashy.php:1509
+msgid "Thank You Page"
+msgstr "רק בעמוד תודה"
+
+#: flashy.php:1514
+msgid "Order Placed"
+msgstr "נוצרה הזמנה"
+
+#: flashy.php:1539
+msgid "Contact Forms"
+msgstr "טפסים"
+
+#: flashy.php:1545
+msgid "Create contact profile on CF7 forms."
+msgstr "צור פרופיל בפלאשי מטופס באתר (CF7)"
+
+#: flashy.php:1568
+msgid "Active"
+msgstr "פעיל"
+
+#: flashy.php:1575
+msgid "Flashy List"
+msgstr "רשימה בפלאשי"
+
+#: flashy.php:1577 flashy.php:1600
+msgid "None"
+msgstr "ללא"
+
+#: flashy.php:1583
+msgid "Map Fields"
+msgstr "מיפוי שדות"
+
+#: flashy.php:1587
+msgid "CF7 Field"
+msgstr "שדה ב CF7"
+
+#: flashy.php:1588
+msgid "Flashy Field"
+msgstr "שדה בפלאשי"
+
+#: flashy.php:1590
+msgid "You are running on DEV / LOCAL mode"
+msgstr "הנכם נמצאים במצב פיתוח"
+
+#: flashy.php:1595
+msgid "In order to quit DEV / LOCAL mode just reset our plugin."
+msgstr "על מנת לצאת ממצב פיתוח, אנא אתחלו את התוסף"
+
+#: flashy.php:1621
+msgid "Save Contact Forms"
+msgstr "שמור הגדרות טפסים"
+
+#: flashy.php:1644
+msgid "Update API Key"
+msgstr "הזן מפתח API"
+
+#: flashy.php:1655
+msgid "Your Benefits"
+msgstr "היתרונות של התוסף"
+
+#: flashy.php:1661
+msgid "Syncing Products, Orders and Customers."
+msgstr "סנכון של מוצרים, הזמנות ולקוחות."
+
+#: flashy.php:1662
+msgid "Tracking Events: Page View, View Product, Add To Cart and Purchase."
+msgstr "אירועי לקוחות למעקב: צפייה בעמודים, צפייה במוצרים, הוספת מוצרים לסל ורכישה."
+
+#: flashy.php:1671
+msgid "Your Products Catalogs"
+msgstr "קטלוג המוצרים שלך"
+
+#: flashy.php:1702
+msgid "I agree to receive promotional emails and text messages."
+msgstr "אני מסכים לקבל דיוור פרסומי באמצעות דואר אלקטרוני והודעות טקסט."
+
+#: flashy.php:1714
+msgid "Mark checkbox by default"
+msgstr "סמן צ'קבוקס כברירת מחדל"
+
+#: flashy.php:1715
+msgid "Do not mark checkbox by default"
+msgstr "לא לסמן צ'קבוקס כברירת מחדל"
+
+#: flashy.php:1933
+msgid "WooCommerce Statuses"
+msgstr "סטטוסים של WooCommerce"
+
+#: flashy.php:1938
+msgid "We suggest to keep the statuses by default, but if you are using custom WooCommerce statuses you can control the integration."
+msgstr ""
+"אנו מציעים לשמור את הסטטוסים כברירת מחדל, אבל אם אתם משתמשים בסטטוסים מותאמים אישית של WooCommerce, אתם  יכולים לשלוט בתהליך "
+"האינטגרציה."
+
+#: flashy.php:1938
+msgid "Manage Statuses"
+msgstr "ניהול סטטוסים"
+
+#: flashy.php:1946
+msgid "Checkout Created"
+msgstr "צ'קאווט נוצר"
+
+#: flashy.php:1938
+msgid "Order Created"
+msgstr "הזמנה נוצרה"
+
+#: flashy.php:1938
+msgid "Order Updated"
+msgstr "הזמנה עודכנה"
+
+#: flashy.php:1938
+msgid "Don't Track"
+msgstr "לא לעקוב"
+
+#~ msgid ""
+#~ "When the customer has placed an order successfully (reached the thank you page) or when the order and payment has not yet been "
+#~ "made."
+#~ msgstr "כאשר הלקוח ביצע הזמנה בהצלחה (הגיע לעמוד תודה) או כאשר הזמנה בוצעה ואולי התשלום עדיין לא בוצע."
+
+#~ msgid ""
+#~ "Use this catalog links to sync between Flashy and WooCommerce, on a weekly basis. On the first install Flashy will take care of "
+#~ "it automatically."
+#~ msgstr "הכנס את הקישור הזה לתוך המערכת של פלאשי וכל הקטלוג יהיה מסונכרן אחת לשבוע."
+
+#~ msgid "The api key has been saved."
+#~ msgstr "מפתח ה API נשמר בהצלחה."
+
+#, fuzzy
+#~| msgid "Flashy"
+#~ msgid "Flashy Export"
+#~ msgstr "פלאשי"
+
+#~ msgid "Save & Export"
+#~ msgstr "שמירה וייצוא"
+
+#~ msgid "Flashy Integration"
+#~ msgstr "פלאשי אינטגרציה"

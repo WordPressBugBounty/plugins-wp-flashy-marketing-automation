@@ -37,8 +37,6 @@ function flashy_hook_new_order($order_id)
 	else
 	{
 		$guest = true;
-
-		$order_meta = get_post_meta($order_id);
 	}
 
 	if( $guest == true && $allow_guests == "no" )
@@ -65,8 +63,8 @@ function flashy_hook_new_order($order_id)
 		}
 		else
 		{
-			if( $guest == true && isset($order_meta[$flashy_subscribe][0]) )
-				$accept = $order_meta[$flashy_subscribe][0];
+			if( $guest == true && $order->get_meta($flashy_subscribe) )
+				$accept = $order->get_meta($flashy_subscribe);
 			else if( $guest == false && isset($meta[$flashy_subscribe][0]) )
 				$accept = $meta[$flashy_subscribe][0];
 			else

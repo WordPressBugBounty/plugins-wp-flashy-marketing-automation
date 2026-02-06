@@ -2,8 +2,8 @@
 Contributors: Flashy
 Tags: marketing automation, email marketing, sms, woocommerce, cart abandonment, popup, up-sell, cross-sell, social ads
 Requires at least: 3.5.0
-Tested up to: 6.1.1
-Stable tag: 6.1.1
+Tested up to: 6.9
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Flashy is an all-in-one marketing platform for e-commerce websites to grow sales
 
 = GROW YOUR MAILING LISTS =
 Use our intelligent popups to convert your website visitors into loyal customers.
-Also sync your Elementor & CF7 forms with Flashy.
+Also, sync your Elementor & CF7 forms with Flashy.
 
 = AI Product Recommendations =
 Our new product recommendation feature is designed to help ecommerce stores increase their revenues by upselling and cross-selling products.
@@ -32,7 +32,15 @@ Syncing all your data - products, orders and customers.
 Add tracking pixels for - PageView, ViewContent, Add To Cart and Purchase, Purchase Updated
 
 = COLLECT MORE SUBSCRIBERS ON CHECK & SIGNUP PAGE =
-Add checkbox on the pages you want to collect consent from your visitor who wants to accept marketing.
+Add a checkbox on the pages you want to collect consent from your visitor who wants to accept marketing.
+
+= 2.0.10 =
+* New Feature: Allowing admin to manage the consent for checkout types
+
+= 2.0.9 =
+* New Feature: Supporting new checkout pages editor
+* Improvement: Enhancing debug with CSRF
+* Bug Fixes: Few minor bug fixes and improvements
 
 = 2.0.8 =
 * New Feature: Add options to control next action after adding tto cart

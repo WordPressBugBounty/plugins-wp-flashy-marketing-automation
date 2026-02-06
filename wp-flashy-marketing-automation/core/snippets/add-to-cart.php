@@ -1,5 +1,7 @@
 <?php
 
+$flashy_cart_data = null;
+
 function flashy_save_cookie($key, $data, $time = true)
 {
     $data = base64_encode(json_encode($data));
@@ -75,6 +77,7 @@ add_action('wp_footer', "flashy_cart_manager");
 function flashy_cart_updated()
 {
     global $woocommerce;
+    global $flashy_cart_data;
 
     $items = $woocommerce->cart->get_cart();
 
@@ -168,8 +171,8 @@ function flashy_cart_updated()
 
     $data['currency'] = get_woocommerce_currency();
 
-    if( !headers_sent() )
-        flashy_save_cookie("flashy_cart", $data);
+    // Store the cart data - will be set as cookie at the end of the request
+    $flashy_cart_data = $data;
 
      if( flashy()->getContactId() && count($items) > 0 )
      {
@@ -177,6 +180,43 @@ function flashy_cart_updated()
      }
 }
 add_action('woocommerce_cart_updated', "flashy_cart_updated", 10, 2);
+
+/**
+ * Set the flashy_cart cookie.
+ * Uses a static flag to only set the cookie once per request.
+ */
+function flashy_set_cart_cookie()
+{
+    global $flashy_cart_data;
+    static $cookie_set = false;
+
+    if ($flashy_cart_data !== null && !$cookie_set && !headers_sent()) {
+        $cookie_set = true;
+        flashy_log("Flashy cart cookie set: " . json_encode($flashy_cart_data), true);
+        flashy_save_cookie("flashy_cart", $flashy_cart_data);
+    }
+}
+
+// For regular page loads
+add_action('wp_footer', 'flashy_set_cart_cookie', 9999);
+add_action('shutdown', 'flashy_set_cart_cookie', 0);
+
+/**
+ * Set cookie for WooCommerce Store API (REST) requests.
+ * The Store API uses wp-json/wc/store/v1/cart/* endpoints.
+ */
+function flashy_set_cart_cookie_rest_response($response, $server, $request)
+{
+    $route = $request->get_route();
+
+    // Only handle WooCommerce Store API cart routes
+    if (strpos($route, '/wc/store') !== false && strpos($route, '/cart') !== false) {
+        flashy_set_cart_cookie();
+    }
+
+    return $response;
+}
+add_filter('rest_post_dispatch', 'flashy_set_cart_cookie_rest_response', 9999, 3);
 
 add_action( 'wp_footer', 'flashy_product_ajax_add_to_cart_js_script' );
 function flashy_product_ajax_add_to_cart_js_script() {

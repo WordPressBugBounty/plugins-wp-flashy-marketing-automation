@@ -5,7 +5,7 @@ function flashy_tracking()
 	$flashy_id 	= get_option('flashy_account_id');
 	$thunder_path = 'https://js.flashyapp.com/thunder.js';
 
-	if(get_option("environment") === 'dev')
+	if(flashy_get_environment() === 'dev' || flashy_get_environment() === 'local')
 	{
 		$thunder_path = 'https://js.flashy.dev/thunder.js';
     }
@@ -14,7 +14,7 @@ function flashy_tracking()
 	{
 		?>
             <script>
-                window.flashyMetadata = {"platform": "WordPress","version": "2.0.8"};
+                window.flashyMetadata = {"platform": "WordPress","version": "2.0.10"};
                 console.log("Flashy Init", flashyMetadata);
             </script>
 			<script>'use strict'; (function (a, b, c) { if (!a.flashy) { a.flashy = function () { a.flashy.event && a.flashy.event(arguments), a.flashy.queue.push(arguments) }, a.flashy.queue = []; var d = document.getElementsByTagName('script')[0], e = document.createElement(b); e.src = c, e.async = !0, d.parentNode.insertBefore(e, d) } })(window, 'script', '<?= $thunder_path ?>'), flashy('init', <?= $flashy_id; ?>);</script>

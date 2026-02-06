@@ -3,7 +3,7 @@
 Plugin Name: Wp Flashy Marketing Automation
 Plugin URI: https://flashy.app
 Description: Wordpress plugin for flashy.app to sync products, orders and customers and track events.
-Version: 2.0.8
+Version: 2.0.10
 Author: Flashy
 Author URI: https://flashy.app
 License: GPL
@@ -81,7 +81,11 @@ class wp_flashy
 
 		add_action('woocommerce_order_status_changed', array($this, 'order_status_changed'), 10, 4);
 
-        add_action('handle_bulk_actions-edit-shop_order', array($this, 'handle_order_bulk_changes'), 10, 3);
+		// NO NEED WE DO IT USING order_status_changed becuase of HPOS
+        // add_filter('handle_bulk_actions-edit-shop_order', array($this, 'handle_order_bulk_changes'), 10, 3);
+
+        // For The New HPOS
+        // add_filter('handle_bulk_actions-woocommerce_page_wc-orders', array($this, 'handle_order_bulk_changes'), 10, 3);
 	}
 
 	/*
@@ -292,15 +296,19 @@ class wp_flashy
 
 			if( isset($accept_marketing['checkout']) && $accept_marketing['checkout'] == "yes" )
 			{
-				$checkbox_position = ( flashy_settings("checkbox_position") ) ? flashy_settings("checkbox_position") : null;
-
-				if( $checkbox_position && isset($checkbox_position['checkout']) )
-				{
-					add_action( $checkbox_position['checkout'], array($this, 'add_accept_marketing') );
+				// Check checkout type setting - default to 'classic' for backwards compatibility
+				$checkout_type = flashy_settings( 'checkout_type' );
+				if ( empty( $checkout_type ) ) {
+					$checkout_type = 'classic';
 				}
-				else
-				{
-					add_action( 'woocommerce_after_order_notes', array($this, 'add_accept_marketing') );
+
+				if ( $checkout_type === 'blocks' ) {
+					// Load WooCommerce Blocks support only when blocks checkout is selected
+					require_once('core/blocks/class-flashy-blocks.php');
+					Flashy_Blocks::init();
+				} else {
+					// Classic checkout hooks
+					add_action( 'wp', array($this, 'maybe_add_classic_checkout_hooks') );
 				}
 			}
 
@@ -480,6 +488,34 @@ class wp_flashy
 		}
 	}
 
+	/**
+	 * Conditionally add classic checkout hooks based on user setting.
+	 * This is called on the 'wp' action to ensure we can check the current page.
+	 */
+	public function maybe_add_classic_checkout_hooks()
+	{
+		// Check checkout type setting - default to 'classic' for backwards compatibility
+		$checkout_type = flashy_settings( 'checkout_type' );
+		if ( empty( $checkout_type ) ) {
+			$checkout_type = 'classic';
+		}
+
+		// Skip if user selected block checkout - the block integration handles it
+		if ( $checkout_type === 'blocks' ) {
+			return;
+		}
+
+		// Add classic checkout hooks
+		$checkbox_position = ( flashy_settings("checkbox_position") ) ? flashy_settings("checkbox_position") : null;
+
+		if($checkbox_position && isset($checkbox_position['checkout'])) {
+			add_action( $checkbox_position['checkout'], array($this, 'add_accept_marketing') );
+		}
+		else {
+			add_action( 'woocommerce_after_order_notes', array($this, 'add_accept_marketing') );
+		}
+	}
+
 	public function add_accept_marketing()
 	{
         if (is_user_logged_in())
@@ -525,16 +561,13 @@ class wp_flashy
             ));
 		}
 
-        if( isset($this->api) )
-        {
-            if( get_option('environment') === "dev" )
-			{
+        if(isset($this->api)) {
+            if(flashy_get_environment() === "dev") {
                 $this->api->client->setBasePath('https://api.flashy.dev/');
                 $this->api->client->setDebug(true);
             }
-            else if( get_option('environment') === "local" )
-			{
-                $this->api->client->setBasePath(FLASHY_LOCAL);
+            else if(flashy_get_environment() === "local" && defined('FLASHY_API_PATH')) {
+                $this->api->client->setBasePath(FLASHY_API_PATH);
                 $this->api->client->setDebug(true);
             }
         }
@@ -660,6 +693,8 @@ class wp_flashy
 		try {
 			foreach ($this->actions as $action => $data)
 			{
+				$action = $this->getAction($action);
+
 				if($action == "create")
 				{
                     $data = $this->getContactAdditionalData($data);
@@ -726,6 +761,15 @@ class wp_flashy
 			flashy_log($e->getMessage(), true);
 			flashy_log($e->getTraceAsString(), true);
 		}
+	}
+
+	public function getAction($var) {
+	    $prefix = "_nonunique_";
+	    if (strpos($var, $prefix) !== false) {
+	        return substr($var, strpos($var, $prefix) + strlen($prefix));
+	    } else {
+	        return $var;
+	    }
 	}
 
     /**
@@ -1351,7 +1395,14 @@ class wp_flashy
 
             if( $status['event'] !== "none" )
             {
-                flashy()->add_action($status['event'], $purchase);
+            	if( isset($data['unique']) ) {
+            		$generateKey =  $data['unique'] . "_nonunique_" . $status['event'];
+
+            		flashy()->add_action($generateKey, $purchase);
+            	}
+            	else {
+                	flashy()->add_action($status['event'], $purchase);
+            	}
             }
         }
     }
@@ -1365,7 +1416,7 @@ class wp_flashy
 
     	if( is_plugin_active('woocommerce/woocommerce.php') && $api_key && $api_key !== "" && $this->api && !isset($this->hooks['flashy_purchase']))
 		{
-            $this->add_action_purchase(['order_id' => $order_id]);
+            $this->add_action_purchase(['order_id' => $order_id, 'unique' => $order_id]);
 		}
     }
 
@@ -1656,7 +1707,6 @@ class wp_flashy
 		$this->saveOptionValue("flashy_settings", null);
 		$this->saveOptionValue("flashy_cf7", null);
 		$this->saveOptionValue("flashy_updates", null);
-		$this->saveOptionValue("environment", null);
 		$this->saveOptionValue("flashy_log_state", null);
 	}
 
@@ -1747,51 +1797,47 @@ class wp_flashy
 
 		if( isset($_GET['reset']) && $_GET['reset'] == "true" )
 		{
-			$this->reset();
-		}
-
-		if(isset($_GET['environment']) && $_GET['environment'] == 'dev')
-        {
-            $this->saveOptionValue("environment", 'dev');
-            return;
-		}
-
-        if( isset($_GET['environment']) && $_GET['environment'] == 'local' )
-        {
-            $this->saveOptionValue("environment", 'local');
-            return;
+			if( isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'flashy_reset_action') )
+			{
+				$this->reset();
+			}
 		}
 
         if( isset($_GET['flashy_log_state']) )
         {
-            if( $_GET['flashy_log_state'] == 'true' )
-            {
-                $this->saveOptionValue("flashy_log_state", 'true');
-                return;
-            }
-            else if( $_GET['flashy_log_state'] == 'false' )
-            {
-                $this->saveOptionValue("flashy_log_state", null);
-                return;
-            }
+			if( isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'flashy_log_state_action') )
+			{
+				if( $_GET['flashy_log_state'] == 'true' )
+				{
+					$this->saveOptionValue("flashy_log_state", 'true');
+					return;
+				}
+				else if( $_GET['flashy_log_state'] == 'false' )
+				{
+					$this->saveOptionValue("flashy_log_state", null);
+					return;
+				}
+			}
 		}
 		?>
 
-		<?php if(get_option("environment") === 'dev' || get_option("environment") === 'local') { ?>
-
-            <div class="flashy-connect">
+		<?php if( flashy_get_environment() ) { ?>
+            <div class="flashy-connect" style="border-left: 4px solid #ff9800;">
                 <div class="title">
-                    <h3 style="margin:0 0 10px 0"><?php _e("You are running on DEV / LOCAL mode",'flashy'); ?></h3>
+                    <h3 style="margin:0 0 10px 0"><?php _e("Developer Mode Active",'flashy'); ?>: <?php echo strtoupper( flashy_get_environment() ); ?></h3>
                 </div>
                 <div class="flashy-content">
                     <div id="titlediv">
                         <div id="titlewrap">
-                            <?php _e("In order to quit DEV / LOCAL mode just reset our plugin.",'flashy'); ?>
+                            <p style="margin:0;"><?php _e("The FLASHY_ENVIRONMENT constant is defined in wp-config.php.",'flashy'); ?></p>
+                            <p style="margin:5px 0 0 0;color:#666;"><?php _e("To disable, remove or comment out the constant definition.",'flashy'); ?></p>
+                            <?php if( flashy_get_environment() == 'local' && defined('FLASHY_API_PATH') ) { ?>
+                                <p style="margin:5px 0 0 0;color:#666;"><?php _e("Using local path: ",'flashy'); ?> <?php echo FLASHY_API_PATH; ?></p>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
             </div>
-
         <?php } ?>
 
 		<?php if( !$this->is_connected() ) { ?>
@@ -1983,6 +2029,15 @@ class wp_flashy
                                                         <input ng-model="settings.checkbox_position.checkout" name="flashy_settings[checkbox_position][checkout]" type="radio" id="woocommerce_review_order_before_submit" value="woocommerce_review_order_before_submit">
                                                         <label for="woocommerce_review_order_before_submit"><?php _e("On Review Order (Before Submit)", 'flashy'); ?></label>
                                                     </div>
+                                                </div>
+
+                                                <div>
+                                                    <label style="font-weight:bold;display:block;margin-bottom:5px;"><?php _e("Checkout Type",'flashy'); ?></label>
+                                                    <select ng-model="settings.checkout_type" name="flashy_settings[checkout_type]" style="width: 100%;padding:8px;max-width:250px;">
+                                                        <option value="classic"><?php _e("Classic Checkout",'flashy'); ?></option>
+                                                        <option value="blocks"><?php _e("Block Checkout",'flashy'); ?></option>
+                                                    </select>
+                                                    <p style="font-size:12px;color:#666;margin-top:5px;"><?php _e("Choose 'Classic Checkout' for the traditional WooCommerce checkout or 'Block Checkout' for the new WooCommerce Blocks checkout.",'flashy'); ?></p>
                                                 </div>
 
                                                 <div class="clearfix"></div>
@@ -2289,6 +2344,49 @@ class wp_flashy
                         </div>
                     </div>
                 </div>
+
+                <?php if(isset($_GET['developer_mode'])) { ?>
+                    <div class="flashy-connect">
+                    <div class="title">
+                        <h3><?php _e("Debug Settings",'flashy'); ?></h3>
+                    </div>
+
+                    <div class="flashy-content">
+                        <div id="titlediv">
+                            <div id="titlewrap">
+                                <p style="font-size:16px;margin-bottom:15px;"><?php _e("Enable or disable debug logging for troubleshooting purposes.",'flashy'); ?></p>
+
+                                <p style="display:block;margin-bottom:30px;">
+                                    <strong><?php _e("Current Status:",'flashy'); ?></strong>
+                                    <?php if( get_option('flashy_log_state') === 'true' ) { ?>
+                                        <span style="color: green; font-weight: bold;"><?php _e("Enabled",'flashy'); ?></span>
+                                    <?php } else { ?>
+                                        <span style="color: #999;"><?php _e("Disabled",'flashy'); ?></span>
+                                    <?php } ?>
+                                </p>
+
+                                <div>
+                                    <?php if( get_option('flashy_log_state') === 'true' ) { ?>
+                                        <a href="<?php echo wp_nonce_url( admin_url('admin.php?page=flashy&flashy_log_state=false'), 'flashy_log_state_action' ); ?>" class="flashy-primary-btn" style="border-color: #dc3545; background-color: #dc3545; text-decoration: none;">
+                                            <?php _e("Disable Logging",'flashy'); ?>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a href="<?php echo wp_nonce_url( admin_url('admin.php?page=flashy&flashy_log_state=true'), 'flashy_log_state_action' ); ?>" class="flashy-primary-btn">
+                                            <?php _e("Enable Logging",'flashy'); ?>
+                                        </a>
+                                    <?php } ?>
+                                </div>
+
+                                <div style="display: block;margin-top: 40px;">
+                                    <a href="<?php echo wp_nonce_url( admin_url('admin.php?page=flashy&reset=true'), 'flashy_reset_action' ); ?>" class="flashy-primary-btn">
+                                        <?php _e("Reset Settings",'flashy'); ?>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
             </div>
 
         </div>
@@ -2311,6 +2409,7 @@ class wp_flashy
                     "checkbox_marked": "<?php echo ( flashy_settings("checkbox_marked") === "yes" ) ? "yes" : "no"; ?>",
 					"accept_marketing": <?php echo ( !flashy_settings("accept_marketing") ) ? "{}" : json_encode(flashy_settings("accept_marketing")); ?>,
 					"checkbox_position": <?php echo ( !flashy_settings("checkbox_position") ) ? '{"checkout": "woocommerce_after_order_notes"}' : json_encode(flashy_settings("checkbox_position"), true); ?>,
+					"checkout_type": <?php echo ( !flashy_settings("checkout_type") ) ? '"classic"' : '"' . flashy_settings("checkout_type") . '"'; ?>,
 				};
 
                 $scope.getWooStatuses = function(statuses) {
@@ -2366,12 +2465,29 @@ function flashy()
 	return $flashy;
 }
 
+/**
+ * @return string|false The environment ('dev', 'local') or false for production
+ */
+function flashy_get_environment()
+{
+	if( defined('FLASHY_ENVIRONMENT') )
+	{
+		$env = FLASHY_ENVIRONMENT;
+		if( $env === 'dev' || $env === 'local' )
+		{
+			return $env;
+		}
+	}
+
+	return false;
+}
+
 function flashy_log($contents, $force = false)
 {
     if( get_option('flashy_log_state') === 'true' )
         $force = true;
 
-	if( $force === false && get_option("environment") !== 'dev' )
+	if( $force === false && flashy_get_environment() !== 'dev' )
 		return;
 
 	$log = apply_filters('flashy/get_info', 'path') . "/error.log";

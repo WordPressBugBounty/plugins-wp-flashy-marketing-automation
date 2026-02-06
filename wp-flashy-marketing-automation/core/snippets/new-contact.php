@@ -44,6 +44,16 @@ function flashy_hook_new_customer($customer_id, $customer_data)
 		$accept = ( $flashy_subscribe && isset($meta[$flashy_subscribe][0]) ) ? $meta[$flashy_subscribe][0] : false;
 	}
 
+	if($accept === false && flashy_settings('add_checkbox') == "yes") {
+		$request_body = file_get_contents('php://input');
+		if(!empty($request_body)) {
+			$request_data = json_decode($request_body, true);
+			if(isset($request_data['extensions']['flashy-marketing']['accept_marketing'])) {
+				$accept = $request_data['extensions']['flashy-marketing']['accept_marketing'];
+			}
+		}
+	}
+
 	$subscribe = ( strval($accept) == "1" || strval($accept) == "yes" ) ? true : false;
 
 	if( $flashy_subscribe == false || $flashy_subscribe == "" || $list_id == false || $subscribe == false )

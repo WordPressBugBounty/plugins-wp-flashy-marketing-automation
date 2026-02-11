@@ -1,0 +1,474 @@
+# Copyright (C) 2026 Flashy
+# This file is distributed under the GPL.
+msgid ""
+msgstr ""
+"Project-Id-Version: Wp Flashy Marketing Automation 2.0.11\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wordpress-plugin\n"
+"Last-Translator: Rafael Mor <hello@flashyapp.com>\n"
+"Language-Team: Flashy <support@flashyapp.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-02-10T07:19:26+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: flashy\n"
+
+#. Plugin Name of the plugin
+#: flashy.php
+msgid "Wp Flashy Marketing Automation"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: flashy.php
+msgid "https://flashy.app"
+msgstr ""
+
+#. Description of the plugin
+#: flashy.php
+msgid "Wordpress plugin for flashy.app to sync products, orders and customers and track events."
+msgstr ""
+
+#. Author of the plugin
+#: flashy.php
+#: core/elementor/form-action.php:34
+#: core/elementor/form-action.php:89
+#: flashy.php:1532
+msgid "Flashy"
+msgstr ""
+
+#: core/blocks/class-flashy-blocks-integration.php:67
+#: flashy.php:2487
+msgid "I agree to receive promotional emails and text messages."
+msgstr ""
+
+#: core/blocks/class-flashy-store-api.php:76
+msgid "Whether the customer accepts marketing communications."
+msgstr ""
+
+#: core/elementor/form-action.php:98
+#, php-format
+msgid "Your Flashy API key is missing, click here to add it <a href=\"%1$s\" target=\"_blank\">Add API Key</a>."
+msgstr ""
+
+#: core/elementor/form-action.php:117
+msgid "List"
+msgstr ""
+
+#: core/elementor/form-action.php:123
+#, php-format
+msgid "Please make sure the form fields (inputs) are with the correct name on your Flashy account <a href=\"%1$s\" target=\"_blank\">Full Guide</a>."
+msgstr ""
+
+#: core/process/wp-background-process.php:425
+#, php-format
+msgid "Every %d Minutes"
+msgstr ""
+
+#: flashy.php:1222
+msgid "Changes has been successfully saved"
+msgstr ""
+
+#: flashy.php:1235
+msgid "The API key is wrong, please try again"
+msgstr ""
+
+#: flashy.php:1244
+msgid "Please contact the support team: support@flashyapp.com"
+msgstr ""
+
+#: flashy.php:1253
+msgid "The List ID is wrong, please try again"
+msgstr ""
+
+#: flashy.php:1266
+msgid "The Flashy account ID has been saved."
+msgstr ""
+
+#: flashy.php:1275
+msgid "The products successfully exported."
+msgstr ""
+
+#: flashy.php:1288
+msgid "WooCommerce plugin is missing!"
+msgstr ""
+
+#: flashy.php:1670
+msgid "Choose a list"
+msgstr ""
+
+#: flashy.php:1830
+msgid "Developer Mode Active"
+msgstr ""
+
+#: flashy.php:1835
+msgid "The FLASHY_ENVIRONMENT constant is defined in wp-config.php."
+msgstr ""
+
+#: flashy.php:1836
+msgid "To disable, remove or comment out the constant definition."
+msgstr ""
+
+#: flashy.php:1838
+msgid "Using local path: "
+msgstr ""
+
+#: flashy.php:1853
+#: flashy.php:2380
+msgid "API Key"
+msgstr ""
+
+#: flashy.php:1862
+msgid "Connect to Flashy"
+msgstr ""
+
+#: flashy.php:1872
+msgid "How To Install"
+msgstr ""
+
+#: flashy.php:1877
+msgid "Find your API key at <a href='https://my.flashy.app/auth/signin' target='_blank'>https://flashy.app</a> and save - That's it!"
+msgstr ""
+
+#: flashy.php:1893
+msgid "FLASHY CONNECTED"
+msgstr ""
+
+#: flashy.php:1895
+msgid "Go to dashboard"
+msgstr ""
+
+#: flashy.php:1903
+msgid "Subscribers List"
+msgstr ""
+
+#: flashy.php:1919
+msgid "You must create a list in our platform. Click the following <a href='https://flashy.app/help/contact-management/how-to-create-a-list/'>link</a> for more information."
+msgstr ""
+
+#: flashy.php:1921
+msgid "You must choose a subscriber list from the following options."
+msgstr ""
+
+#: flashy.php:1927
+msgid "Save List"
+msgstr ""
+
+#: flashy.php:1928
+#: flashy.php:2276
+#: flashy.php:2367
+#: flashy.php:2390
+msgid "Last updated at: "
+msgstr ""
+
+#: flashy.php:1940
+msgid "Settings"
+msgstr ""
+
+#: flashy.php:1945
+msgid "Add Accept Marketing Checkbox"
+msgstr ""
+
+#: flashy.php:1946
+msgid "Flashy can manage your subscription list by adding a checkbox to the pages you choose or you can use your own checkbox."
+msgstr ""
+
+#: flashy.php:1953
+msgid "Add Flashy Checkbox"
+msgstr ""
+
+#: flashy.php:1954
+msgid "We Have Our Own Checkbox"
+msgstr ""
+
+#: flashy.php:1957
+msgid "Mark checkbox by default"
+msgstr ""
+
+#: flashy.php:1958
+msgid "Do not mark checkbox by default"
+msgstr ""
+
+#: flashy.php:1969
+msgid "Where To Add Checkbox"
+msgstr ""
+
+#: flashy.php:1975
+msgid "Choose where you want to add Flashy checkbox"
+msgstr ""
+
+#: flashy.php:1979
+msgid "On checkout page"
+msgstr ""
+
+#: flashy.php:1984
+msgid "On signup page"
+msgstr ""
+
+#: flashy.php:1998
+msgid "Accept Marketing Text"
+msgstr ""
+
+#: flashy.php:2004
+msgid "Add a message for your customers before the checkbox."
+msgstr ""
+
+#: flashy.php:2018
+msgid "Checkout Checkbox Position"
+msgstr ""
+
+#: flashy.php:2024
+msgid "Choose where you want to position Flashy checkbox on the <b>checkout</b> page."
+msgstr ""
+
+#: flashy.php:2029
+msgid "After Order Notes"
+msgstr ""
+
+#: flashy.php:2033
+msgid "On Review Order (Before Submit)"
+msgstr ""
+
+#: flashy.php:2038
+msgid "Checkout Type"
+msgstr ""
+
+#: flashy.php:2040
+msgid "Classic Checkout"
+msgstr ""
+
+#: flashy.php:2041
+msgid "Block Checkout"
+msgstr ""
+
+#: flashy.php:2043
+msgid "Choose 'Classic Checkout' for the traditional WooCommerce checkout or 'Block Checkout' for the new WooCommerce Blocks checkout."
+msgstr ""
+
+#: flashy.php:2057
+msgid "Checkbox Name"
+msgstr ""
+
+#: flashy.php:2063
+msgid "If you have a checkbox on the checkout page that offers the customer to join your mailing list, you can subscribe him automatically. The name of the field on the checkout page they check must be filled."
+msgstr ""
+
+#: flashy.php:2084
+msgid "Create Account For Guests"
+msgstr ""
+
+#: flashy.php:2085
+msgid "When a visitor places an order on the site <b><u>as a guest</u></b>, you can control whether or not to create an account for him in Flashy."
+msgstr ""
+
+#: flashy.php:2092
+#: flashy.php:2211
+#: flashy.php:2231
+#: flashy.php:2316
+msgid "Yes"
+msgstr ""
+
+#: flashy.php:2093
+#: flashy.php:2212
+#: flashy.php:2232
+#: flashy.php:2315
+msgid "No"
+msgstr ""
+
+#: flashy.php:2104
+msgid "When To Create Flashy Contact"
+msgstr ""
+
+#: flashy.php:2105
+msgid "You can decide in when our plugin will create a new Flashy contact."
+msgstr ""
+
+#: flashy.php:2112
+msgid "On User Creation & Purchase"
+msgstr ""
+
+#: flashy.php:2113
+msgid "After Purchase Only"
+msgstr ""
+
+#: flashy.php:2134
+msgid "Context Information"
+msgstr ""
+
+#: flashy.php:2135
+msgid "Add contextual data to Flashy's events."
+msgstr ""
+
+#: flashy.php:2142
+msgid "Without Contextual Data"
+msgstr ""
+
+#: flashy.php:2143
+msgid "Add Contextual Data"
+msgstr ""
+
+#: flashy.php:2154
+msgid "When To Send Purchase Event"
+msgstr ""
+
+#: flashy.php:2155
+msgid "On thank you page - after customer completed payment. <br/> On order placed - before the checkout process completed."
+msgstr ""
+
+#: flashy.php:2167
+msgid "WooCommerce Statuses"
+msgstr ""
+
+#: flashy.php:2172
+msgid "We suggest to keep the statuses by default, but if you are using custom WooCommerce statuses you can control the integration."
+msgstr ""
+
+#: flashy.php:2173
+msgid "Manage Statuses"
+msgstr ""
+
+#: flashy.php:2180
+msgid "Checkout Created"
+msgstr ""
+
+#: flashy.php:2181
+msgid "Order Created"
+msgstr ""
+
+#: flashy.php:2182
+msgid "Order Updated"
+msgstr ""
+
+#: flashy.php:2183
+msgid "Don't Track"
+msgstr ""
+
+#: flashy.php:2198
+msgid "Product Reviews"
+msgstr ""
+
+#: flashy.php:2203
+msgid "Google Review Snippet"
+msgstr ""
+
+#: flashy.php:2204
+msgid "Add Google structured data (JSON-LD) for product reviews on product pages."
+msgstr ""
+
+#: flashy.php:2223
+msgid "Show Reviews on Category Pages"
+msgstr ""
+
+#: flashy.php:2224
+msgid "Display review stars and count on product cards in shop/category pages."
+msgstr ""
+
+#: flashy.php:2243
+msgid "Category Reviews Position"
+msgstr ""
+
+#: flashy.php:2252
+msgid "After Product Title"
+msgstr ""
+
+#: flashy.php:2256
+msgid "After Add to Cart Button"
+msgstr ""
+
+#: flashy.php:2260
+msgid "Before Product Title"
+msgstr ""
+
+#: flashy.php:2275
+msgid "Save Changes"
+msgstr ""
+
+#: flashy.php:2284
+msgid "Contact Forms"
+msgstr ""
+
+#: flashy.php:2290
+msgid "Create contact profile on CF7 forms."
+msgstr ""
+
+#: flashy.php:2313
+msgid "Active"
+msgstr ""
+
+#: flashy.php:2320
+msgid "Flashy List"
+msgstr ""
+
+#: flashy.php:2322
+#: flashy.php:2345
+msgid "None"
+msgstr ""
+
+#: flashy.php:2328
+msgid "Map Fields"
+msgstr ""
+
+#: flashy.php:2332
+msgid "CF7 Field"
+msgstr ""
+
+#: flashy.php:2333
+msgid "Flashy Field"
+msgstr ""
+
+#: flashy.php:2366
+msgid "Save Contact Forms"
+msgstr ""
+
+#: flashy.php:2389
+msgid "Update API Key"
+msgstr ""
+
+#: flashy.php:2400
+msgid "Your Benefits"
+msgstr ""
+
+#: flashy.php:2406
+msgid "Syncing Products, Orders and Customers."
+msgstr ""
+
+#: flashy.php:2407
+msgid "Tracking Events: Page View, View Product, Add To Cart and Purchase."
+msgstr ""
+
+#: flashy.php:2416
+msgid "Your Products Catalogs"
+msgstr ""
+
+#: flashy.php:2431
+msgid "Debug Settings"
+msgstr ""
+
+#: flashy.php:2437
+msgid "Enable or disable debug logging for troubleshooting purposes."
+msgstr ""
+
+#: flashy.php:2440
+msgid "Current Status:"
+msgstr ""
+
+#: flashy.php:2442
+msgid "Enabled"
+msgstr ""
+
+#: flashy.php:2444
+msgid "Disabled"
+msgstr ""
+
+#: flashy.php:2451
+msgid "Disable Logging"
+msgstr ""
+
+#: flashy.php:2455
+msgid "Enable Logging"
+msgstr ""
+
+#: flashy.php:2462
+msgid "Reset Settings"
+msgstr ""

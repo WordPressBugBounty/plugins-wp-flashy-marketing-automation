@@ -10,11 +10,9 @@ function flashy_tracking()
 		$thunder_path = 'https://js.flashy.dev/thunder.js';
     }
 
-	if(isset($flashy_id) && $flashy_id != '')
-	{
-		?>
+	if(isset($flashy_id) && $flashy_id != '') { ?>
             <script>
-                window.flashyMetadata = {"platform": "WordPress","version": "2.0.10"};
+                window.flashyMetadata = {"platform": "WordPress","version": "2.0.11"};
                 console.log("Flashy Init", flashyMetadata);
             </script>
 			<script>'use strict'; (function (a, b, c) { if (!a.flashy) { a.flashy = function () { a.flashy.event && a.flashy.event(arguments), a.flashy.queue.push(arguments) }, a.flashy.queue = []; var d = document.getElementsByTagName('script')[0], e = document.createElement(b); e.src = c, e.async = !0, d.parentNode.insertBefore(e, d) } })(window, 'script', '<?= $thunder_path ?>'), flashy('init', <?= $flashy_id; ?>);</script>
@@ -28,6 +26,7 @@ function flashy_tracking()
                     $category = get_queried_object();
                     ?>
                     flashy('amplify:ViewCategory', {"category": "<?php echo $category->name; ?>"});
+                    flashy('PageView');
 				<?php } else { ?>
 					flashy('PageView');
 				<?php } ?>
@@ -36,7 +35,6 @@ function flashy_tracking()
 	}
 }
 add_action('wp_head', 'flashy_tracking');
-
 
 function flashy_global_category_list()
 {

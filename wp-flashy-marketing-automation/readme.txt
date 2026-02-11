@@ -18,12 +18,12 @@ Also, sync your Elementor & CF7 forms with Flashy.
 = AI Product Recommendations =
 Our new product recommendation feature is designed to help ecommerce stores increase their revenues by upselling and cross-selling products.
 We use sophisticated algorithms to recommend related products to customers based on their full activity.
-This helps customers discover products they may not have found otherwise, and encourages them to add more items to their cart.
+This helps customers discover products they may not have found otherwise and encourages them to add more items to their cart.
 The feature also allows stores to target specific customers with product recommendations, which can help increase the average order value.
 With this feature, stores can increase their sales and grow their revenues.
 
 = WooCommerce Cart Abandonment =
-With our solution you can prevent from customer to abandonment their cart, use one of our ready-to-use automations with email and text messages.
+With our solution you can prevent from customer from abandonment their cart, using one of our ready-to-use automations with email, text messages and WhatsApp messages.
 
 = REAL-TIME SYNC =
 Syncing all your data - products, orders and customers.
@@ -34,6 +34,11 @@ Add tracking pixels for - PageView, ViewContent, Add To Cart and Purchase, Purch
 = COLLECT MORE SUBSCRIBERS ON CHECK & SIGNUP PAGE =
 Add a checkbox on the pages you want to collect consent from your visitor who wants to accept marketing.
 
+= 2.0.11 =
+* New Feature: Add Google Reviews Rich Snippets support
+* New Feature: Show total reviews on category pages
+* New Feature: Add new tracking on the category pages
+
 = 2.0.10 =
 * New Feature: Allowing admin to manage the consent for checkout types
 
@@ -43,12 +48,12 @@ Add a checkbox on the pages you want to collect consent from your visitor who wa
 * Bug Fixes: Few minor bug fixes and improvements
 
 = 2.0.8 =
-* New Feature: Add options to control next action after adding tto cart
+* New Feature: Add options to control the next action after adding to the cart
 * Improvement: Support PHP 8+
 * Bug Fixes: Few minor bug fixes
 
 = 2.0.7 =
-* New Feature: Allow to add to cart from product recommendations
+* New Feature: Allow adding to cart from product recommendations
 * New Feature: New 8 AI models for product recommendations
 * Improvement: Improved design on our products recommendations
 * Improvement: Easily find your current Flashy version
@@ -64,20 +69,20 @@ Add a checkbox on the pages you want to collect consent from your visitor who wa
 = 2.0.5 =
 * New Feature: Advanced Control Over WooCommerce Statuses
 * New Feature: Advanced Control On Coupons Generation
-* New Feature: Option to export guests orders
+* New Feature: Option to export guests' orders
 * New Integration: WooCommerce Points and Rewards
 * Improvement: Better support for Bundle Products
 * Improvement: Bug fixes & improvements
 * Improvement: Improve Feed catalog for more information
 
 = 2.0.4 =
-* Allow to change the default value of accept marketing checkbox
+* Allow changing the default value of acceptance marketing checkbox
 * Improve ViewContent event for product bundles
 * Improve UpdateCart event for product bundles
 * Improve Feed catalog for more information
 * Improve WooCommerce Coupon Code Generation
-* Improve Cart Restore (Support specific varitations and variation id)
-* API Response error message for 403 code for unverfieid users
+* Improve Cart Restore (Support specific variation and variation id)
+* API Response error message for code 403 for unverified users
 
 = 2.0.3 =
 * Improve WooCommerce multi currency & subdomain cookies.

@@ -3,10 +3,12 @@
 Plugin Name: Wp Flashy Marketing Automation
 Plugin URI: https://flashy.app
 Description: Wordpress plugin for flashy.app to sync products, orders and customers and track events.
-Version: 2.0.10
+Version: 2.0.11
 Author: Flashy
 Author URI: https://flashy.app
 License: GPL
+Text Domain: flashy
+Domain Path: /lang
 Copyright: flashy.app
 */
 
@@ -278,6 +280,7 @@ class wp_flashy
 		{
 			require_once('core/snippets/add-to-cart.php');
 			require_once('core/snippets/conversions.php');
+			require_once('core/snippets/reviews.php');
 		}
 
 		if( is_plugin_active('woocommerce-points-and-rewards/woocommerce-points-and-rewards.php') )
@@ -2191,6 +2194,83 @@ class wp_flashy
 
                         <hr style="margin:30px 0;">
 
+                        <div class="woo">
+                            <h3><?php _e("Product Reviews", 'flashy'); ?></h3>
+
+                            <div class="flex">
+                                <div style="width:33%;">
+                                    <div class="title">
+                                        <h3><?php _e("Google Review Snippet", 'flashy'); ?></h3>
+                                        <p style="font-size:16px;width: 80%;"><?php _e("Add Google structured data (JSON-LD) for product reviews on product pages.", 'flashy'); ?></p>
+                                    </div>
+
+                                    <div class="flashy-content">
+                                        <div id="titlediv">
+                                            <div id="titlewrap">
+                                                <select name="flashy_settings[reviews_snippet]" ng-model="settings.reviews_snippet" style="width: 100%;padding:10px;">
+                                                    <option value="yes"><?php _e("Yes", 'flashy'); ?></option>
+                                                    <option value="no"><?php _e("No", 'flashy'); ?></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div style="width:33%;">
+                                    <div class="title">
+                                        <h3><?php _e("Show Reviews on Category Pages", 'flashy'); ?></h3>
+                                        <p style="font-size:16px;width: 80%;"><?php _e("Display review stars and count on product cards in shop/category pages.", 'flashy'); ?></p>
+                                    </div>
+
+                                    <div class="flashy-content">
+                                        <div id="titlediv">
+                                            <div id="titlewrap">
+                                                <select name="flashy_settings[reviews_category]" ng-model="settings.reviews_category" style="width: 100%;padding:10px;">
+                                                    <option value="yes"><?php _e("Yes", 'flashy'); ?></option>
+                                                    <option value="no"><?php _e("No", 'flashy'); ?></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div style="width:33%;" ng-if="settings.reviews_category == 'yes'">
+                                    <div class="title">
+                                        <h3><?php _e("Category Reviews Position", 'flashy'); ?></h3>
+                                    </div>
+
+                                    <div class="flashy-content">
+                                        <div id="titlediv">
+                                            <div id="titlewrap">
+                                                <div style="margin-bottom: 10px;">
+                                                    <div>
+                                                        <input ng-model="settings.reviews_category_position" name="flashy_settings[reviews_category_position]" type="radio" id="reviews_pos_after_title" value="woocommerce_after_shop_loop_item_title">
+                                                        <label for="reviews_pos_after_title"><?php _e("After Product Title", 'flashy'); ?></label>
+                                                    </div>
+                                                    <div>
+                                                        <input ng-model="settings.reviews_category_position" name="flashy_settings[reviews_category_position]" type="radio" id="reviews_pos_after_cart" value="woocommerce_after_shop_loop_item">
+                                                        <label for="reviews_pos_after_cart"><?php _e("After Add to Cart Button", 'flashy'); ?></label>
+                                                    </div>
+                                                    <div>
+                                                        <input ng-model="settings.reviews_category_position" name="flashy_settings[reviews_category_position]" type="radio" id="reviews_pos_before_title" value="woocommerce_before_shop_loop_item_title">
+                                                        <label for="reviews_pos_before_title"><?php _e("Before Product Title", 'flashy'); ?></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="margin:30px 0;">
+
                         <div class="submit-post">
                             <input type="submit" class="flashy-primary-btn" value="<?php _e("Save Changes",'flashy'); ?>" style="margin-top:0;">
                             <p class="update-msg"><?php _e("Last updated at: ",'flashy'); ?> <?= $flashy_updates['settings'] ?></p>
@@ -2410,6 +2490,9 @@ class wp_flashy
 					"accept_marketing": <?php echo ( !flashy_settings("accept_marketing") ) ? "{}" : json_encode(flashy_settings("accept_marketing")); ?>,
 					"checkbox_position": <?php echo ( !flashy_settings("checkbox_position") ) ? '{"checkout": "woocommerce_after_order_notes"}' : json_encode(flashy_settings("checkbox_position"), true); ?>,
 					"checkout_type": <?php echo ( !flashy_settings("checkout_type") ) ? '"classic"' : '"' . flashy_settings("checkout_type") . '"'; ?>,
+					"reviews_snippet": "<?php echo flashy_settings('reviews_snippet') ?: 'no'; ?>",
+					"reviews_category": "<?php echo flashy_settings('reviews_category') ?: 'no'; ?>",
+					"reviews_category_position": "<?php echo flashy_settings('reviews_category_position') ?: 'woocommerce_after_shop_loop_item_title'; ?>",
 				};
 
                 $scope.getWooStatuses = function(statuses) {

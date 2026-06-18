@@ -514,3 +514,75 @@ msgstr ""
 #: flashy.php:2416
 msgid "Your Products Catalogs"
 msgstr "קטלוג המוצרים שלך"
+
+#: flashy.php:2273
+msgid "Back in Stock"
+msgstr "חזר למלאי"
+
+#: flashy.php:2278
+msgid "Out of Stock Popup"
+msgstr "פופאפ אזל מהמלאי"
+
+#: flashy.php:2279
+msgid "Show a Flashy popup on the product page when a product or the selected variation is out of stock, so visitors can sign up to be notified when it's back in stock."
+msgstr "הצגת פופאפ של פלאשי בעמוד המוצר כאשר המוצר או הוריאציה שנבחרה אזלו מהמלאי, כדי שמבקרים יוכלו להירשם ולקבל התראה כשהמוצר חוזר למלאי."
+
+#: flashy.php:2298
+msgid "Popup ID"
+msgstr "מזהה הפופאפ"
+
+#: flashy.php:2299
+msgid "The ID of the Flashy popup to display when out of stock."
+msgstr "המזהה (ID) של הפופאפ בפלאשי שיוצג כאשר המוצר אזל מהמלאי."
+
+#: flashy.php:2305
+msgid "e.g. 12345"
+msgstr "לדוגמה: 12345"
+
+#: flashy.php:2336
+msgid "Element Position"
+msgstr "מיקום האלמנט"
+
+#: flashy.php:2324
+msgid "In product summary (recommended)"
+msgstr "בתקציר המוצר (מומלץ)"
+
+#: flashy.php:2328
+msgid "Below product summary"
+msgstr "מתחת לתקציר המוצר"
+
+#: flashy.php:2332
+msgid "After product meta"
+msgstr "אחרי פרטי המוצר (meta)"
+
+#: flashy.php:2337
+msgid "Apply popup conditions"
+msgstr "החלת תנאי ההצגה של הפופאפ"
+
+#: flashy.php:2342
+msgid "Evaluate the popup's display conditions before showing it."
+msgstr "בדיקת תנאי ההצגה של הפופאפ לפני הצגתו."
+
+#: flashy.php:2289
+msgid "Display Type"
+msgstr "סוג התצוגה"
+
+#: flashy.php:2299
+msgid "Inject the popup into the page, or show a button instead. The button has the .flashy-back-in-stock CSS class for styling."
+msgstr "הזרקת הפופאפ לתוך העמוד, או הצגת כפתור במקום. לכפתור יש מחלקת CSS בשם .flashy-back-in-stock לעיצוב."
+
+#: flashy.php:2305
+msgid "Inject Popup"
+msgstr "הזרקת פופאפ"
+
+#: flashy.php:2306
+msgid "Show Button"
+msgstr "הצגת כפתור"
+
+#: flashy.php:2311
+msgid "Button Text"
+msgstr "טקסט הכפתור"
+
+#: core/snippets/out-of-stock.php:49
+msgid "Notify me when available"
+msgstr "עדכנו אותי כשחוזר למלאי"

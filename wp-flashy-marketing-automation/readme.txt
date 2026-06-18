@@ -34,6 +34,10 @@ Add tracking pixels for - PageView, ViewContent, Add To Cart and Purchase, Purch
 = COLLECT MORE SUBSCRIBERS ON CHECK & SIGNUP PAGE =
 Add a checkbox on the pages you want to collect consent from your visitor who wants to accept marketing.
 
+= 2.0.12 =
+* New Feature: New weblayer type: Back In Stock
+* Improvements: General improvements overall
+
 = 2.0.11 =
 * New Feature: Add Google Reviews Rich Snippets support
 * New Feature: Show total reviews on category pages

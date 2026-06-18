@@ -3,7 +3,7 @@
 Plugin Name: Wp Flashy Marketing Automation
 Plugin URI: https://flashy.app
 Description: Wordpress plugin for flashy.app to sync products, orders and customers and track events.
-Version: 2.0.11
+Version: 2.0.12
 Author: Flashy
 Author URI: https://flashy.app
 License: GPL
@@ -281,6 +281,7 @@ class wp_flashy
 			require_once('core/snippets/add-to-cart.php');
 			require_once('core/snippets/conversions.php');
 			require_once('core/snippets/reviews.php');
+			require_once('core/snippets/out-of-stock.php');
 		}
 
 		if( is_plugin_active('woocommerce-points-and-rewards/woocommerce-points-and-rewards.php') )
@@ -1412,9 +1413,6 @@ class wp_flashy
 
 	function order_status_changed($order_id, $status_from, $status_to, $instance)
     {
-        if( doing_action('handle_bulk_actions-edit-shop_order') )
-            return;
-
     	$api_key = get_option('flashy_key');
 
     	if( is_plugin_active('woocommerce/woocommerce.php') && $api_key && $api_key !== "" && $this->api && !isset($this->hooks['flashy_purchase']))
@@ -2271,6 +2269,110 @@ class wp_flashy
 
                         <hr style="margin:30px 0;">
 
+                        <div class="woo">
+                            <h3><?php _e("Back in Stock", 'flashy'); ?></h3>
+
+                            <div class="flex">
+                                <div style="width:33%;">
+                                    <div class="title">
+                                        <h3><?php _e("Out of Stock Popup", 'flashy'); ?></h3>
+                                        <p style="font-size:16px;width: 80%;"><?php _e("Show a Flashy popup on the product page when a product or the selected variation is out of stock, so visitors can sign up to be notified when it's back in stock.", 'flashy'); ?></p>
+                                    </div>
+
+                                    <div class="flashy-content">
+                                        <div id="titlediv">
+                                            <div id="titlewrap">
+                                                <select name="flashy_settings[back_in_stock]" ng-model="settings.back_in_stock" style="width: 100%;padding:10px;">
+                                                    <option value="no"><?php _e("No", 'flashy'); ?></option>
+                                                    <option value="yes"><?php _e("Yes", 'flashy'); ?></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="title" style="margin-top:20px;" ng-if="settings.back_in_stock == 'yes'">
+                                        <h3><?php _e("Display Type", 'flashy'); ?></h3>
+                                        <p style="font-size:16px;width: 80%;"><?php _e("Inject the popup into the page, or show a button instead. The button has the .flashy-back-in-stock CSS class for styling.", 'flashy'); ?></p>
+                                    </div>
+
+                                    <div class="flashy-content" ng-if="settings.back_in_stock == 'yes'">
+                                        <div id="titlediv">
+                                            <div id="titlewrap">
+                                                <select name="flashy_settings[back_in_stock_display]" ng-model="settings.back_in_stock_display" style="width: 100%;padding:10px;">
+                                                    <option value="popup"><?php _e("Inject Popup", 'flashy'); ?></option>
+                                                    <option value="button"><?php _e("Show Button", 'flashy'); ?></option>
+                                                </select>
+
+                                                <div style="margin-top:15px;" ng-if="settings.back_in_stock_display == 'button'">
+                                                    <label style="font-weight:bold;display:block;margin-bottom:5px;"><?php _e("Button Text", 'flashy'); ?></label>
+                                                    <input type="text" name="flashy_settings[back_in_stock_button_text]" ng-model="settings.back_in_stock_button_text" placeholder="<?php echo esc_attr__("Notify me when available", 'flashy'); ?>" style="width: 100%;padding:10px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div style="width:33%;" ng-if="settings.back_in_stock == 'yes' && settings.back_in_stock_display == 'popup'">
+                                    <div class="title">
+                                        <h3><?php _e("Popup ID", 'flashy'); ?></h3>
+                                        <p style="font-size:16px;width: 80%;"><?php _e("The ID of the Flashy popup to display when out of stock.", 'flashy'); ?></p>
+                                    </div>
+
+                                    <div class="flashy-content">
+                                        <div id="titlediv">
+                                            <div id="titlewrap" style="max-width: 400px;">
+                                                <input type="text" name="flashy_settings[back_in_stock_popup_id]" ng-model="settings.back_in_stock_popup_id" placeholder="<?php _e("e.g. 12345", 'flashy'); ?>" style="width: 100%;padding:10px;">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div style="width:33%;" ng-if="settings.back_in_stock == 'yes'">
+                                    <div class="title">
+                                        <h3><?php _e("Element Position", 'flashy'); ?></h3>
+                                    </div>
+
+                                    <div class="flashy-content">
+                                        <div id="titlediv">
+                                            <div id="titlewrap">
+                                                <div style="margin-bottom: 10px;">
+                                                    <div>
+                                                        <input ng-model="settings.back_in_stock_position" name="flashy_settings[back_in_stock_position]" type="radio" id="bis_pos_summary" value="woocommerce_single_product_summary">
+                                                        <label for="bis_pos_summary"><?php _e("In product summary (recommended)", 'flashy'); ?></label>
+                                                    </div>
+                                                    <div>
+                                                        <input ng-model="settings.back_in_stock_position" name="flashy_settings[back_in_stock_position]" type="radio" id="bis_pos_after_summary" value="woocommerce_after_single_product_summary">
+                                                        <label for="bis_pos_after_summary"><?php _e("Below product summary", 'flashy'); ?></label>
+                                                    </div>
+                                                    <div>
+                                                        <input ng-model="settings.back_in_stock_position" name="flashy_settings[back_in_stock_position]" type="radio" id="bis_pos_meta" value="woocommerce_product_meta_end">
+                                                        <label for="bis_pos_meta"><?php _e("After product meta", 'flashy'); ?></label>
+                                                    </div>
+                                                </div>
+
+                                                <div style="margin-top:10px;" ng-if="settings.back_in_stock_display == 'popup'">
+                                                    <label style="font-weight:bold;display:block;margin-bottom:5px;"><?php _e("Apply popup conditions", 'flashy'); ?></label>
+                                                    <select name="flashy_settings[back_in_stock_conditions]" ng-model="settings.back_in_stock_conditions" style="width: 100%;padding:8px;max-width:250px;">
+                                                        <option value="no"><?php _e("No", 'flashy'); ?></option>
+                                                        <option value="yes"><?php _e("Yes", 'flashy'); ?></option>
+                                                    </select>
+                                                    <p style="font-size:12px;color:#666;margin-top:5px;"><?php _e("Evaluate the popup's display conditions before showing it.", 'flashy'); ?></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="margin:30px 0;">
+
                         <div class="submit-post">
                             <input type="submit" class="flashy-primary-btn" value="<?php _e("Save Changes",'flashy'); ?>" style="margin-top:0;">
                             <p class="update-msg"><?php _e("Last updated at: ",'flashy'); ?> <?= $flashy_updates['settings'] ?></p>
@@ -2493,6 +2595,12 @@ class wp_flashy
 					"reviews_snippet": "<?php echo flashy_settings('reviews_snippet') ?: 'no'; ?>",
 					"reviews_category": "<?php echo flashy_settings('reviews_category') ?: 'no'; ?>",
 					"reviews_category_position": "<?php echo flashy_settings('reviews_category_position') ?: 'woocommerce_after_shop_loop_item_title'; ?>",
+					"back_in_stock": "<?php echo flashy_settings('back_in_stock') ?: 'no'; ?>",
+					"back_in_stock_popup_id": "<?php echo esc_js( flashy_settings('back_in_stock_popup_id') ?: '' ); ?>",
+					"back_in_stock_position": "<?php echo flashy_settings('back_in_stock_position') ?: 'woocommerce_single_product_summary'; ?>",
+					"back_in_stock_conditions": "<?php echo flashy_settings('back_in_stock_conditions') ?: 'no'; ?>",
+					"back_in_stock_display": "<?php echo flashy_settings('back_in_stock_display') ?: 'popup'; ?>",
+					"back_in_stock_button_text": "<?php echo esc_js( flashy_settings('back_in_stock_button_text') ?: '' ); ?>",
 				};
 
                 $scope.getWooStatuses = function(statuses) {

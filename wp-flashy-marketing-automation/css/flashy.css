@@ -8,6 +8,7 @@ body.toplevel_page_flashy {
 
 .flex {
 	display: flex;
+	gap: 30px;
 }
 
 .flashy-box {

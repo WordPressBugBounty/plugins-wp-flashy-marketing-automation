@@ -12,7 +12,7 @@ function flashy_tracking()
 
 	if(isset($flashy_id) && $flashy_id != '') { ?>
             <script>
-                window.flashyMetadata = {"platform": "WordPress","version": "2.0.11"};
+                window.flashyMetadata = {"platform": "WordPress","version": "2.0.13"};
                 console.log("Flashy Init", flashyMetadata);
             </script>
 			<script>'use strict'; (function (a, b, c) { if (!a.flashy) { a.flashy = function () { a.flashy.event && a.flashy.event(arguments), a.flashy.queue.push(arguments) }, a.flashy.queue = []; var d = document.getElementsByTagName('script')[0], e = document.createElement(b); e.src = c, e.async = !0, d.parentNode.insertBefore(e, d) } })(window, 'script', '<?= $thunder_path ?>'), flashy('init', <?= $flashy_id; ?>);</script>

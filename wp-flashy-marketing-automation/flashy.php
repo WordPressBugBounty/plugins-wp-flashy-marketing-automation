@@ -3,7 +3,7 @@
 Plugin Name: Wp Flashy Marketing Automation
 Plugin URI: https://flashy.app
 Description: Wordpress plugin for flashy.app to sync products, orders and customers and track events.
-Version: 2.0.12
+Version: 2.0.13
 Author: Flashy
 Author URI: https://flashy.app
 License: GPL

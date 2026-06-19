@@ -2,7 +2,7 @@
 Contributors: Flashy
 Tags: marketing automation, email marketing, sms, woocommerce, cart abandonment, popup, up-sell, cross-sell, social ads
 Requires at least: 3.5.0
-Tested up to: 6.9
+Tested up to: 7.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,6 +33,9 @@ Add tracking pixels for - PageView, ViewContent, Add To Cart and Purchase, Purch
 
 = COLLECT MORE SUBSCRIBERS ON CHECK & SIGNUP PAGE =
 Add a checkbox on the pages you want to collect consent from your visitor who wants to accept marketing.
+
+= 2.0.13 =
+* New Feature: Added compatibility support
 
 = 2.0.12 =
 * New Feature: New weblayer type: Back In Stock

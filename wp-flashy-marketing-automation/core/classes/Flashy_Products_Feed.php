@@ -114,6 +114,7 @@ class Flashy_Products_Feed
             "parent_id" => $product->get_parent_id() ? $product->get_parent_id() : 0,
             "tags" => $this->childFieldsCheck("tags", $product, $parent),
             "sku" => $product->get_sku(),
+            "gtin" => method_exists($product, 'get_global_unique_id') ? (string) $product->get_global_unique_id() : '',
             "created_at" => $product->get_date_created()->getTimestamp(),
             "updated_at" => $product->get_date_modified()->getTimestamp(),
         ];

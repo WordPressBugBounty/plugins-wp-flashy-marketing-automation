@@ -3,7 +3,7 @@
 Plugin Name: Wp Flashy Marketing Automation
 Plugin URI: https://flashy.app
 Description: Wordpress plugin for flashy.app to sync products, orders and customers and track events.
-Version: 2.0.13
+Version: 2.0.14
 Author: Flashy
 Author URI: https://flashy.app
 License: GPL
@@ -640,6 +640,14 @@ class wp_flashy
 
 		// Flashy Actions
 		add_action('shutdown', array($this, 'run_flashy_actions'), 10, 0);
+
+		// diagnostics only: bracket the shutdown chain, so a third-party shutdown callback that
+		// exits or fatals before our flush (killing every later callback with it) is visible in the log
+		if( flashy_diagnostics_enabled() )
+		{
+			add_action('shutdown', array($this, 'shutdown_probe_start'), PHP_INT_MIN, 0);
+			add_action('shutdown', array($this, 'shutdown_probe_end'), PHP_INT_MAX, 0);
+		}
 	}
 
 	/**
@@ -667,11 +675,55 @@ class wp_flashy
 	function add_action($action, $data)
 	{
 		$this->actions[$action] = $data;
+
+		if( flashy_diagnostics_enabled() )
+			flashy_log("Queued action: " . $action . " (flush hooked: " . (has_action('shutdown', array($this, 'run_flashy_actions')) !== false ? "yes" : "no") . ")");
 	}
 
 	function add_hook($func, $data)
 	{
 		$this->hooks[$func] = $data;
+
+		if( flashy_diagnostics_enabled() )
+			flashy_log("Queued hook: " . $func);
+	}
+
+	function shutdown_probe_start()
+	{
+		if( empty($this->actions) && empty($this->hooks) )
+			return;
+
+		flashy_log("Shutdown chain started; pending: " . json_encode(array_keys($this->actions + $this->hooks)));
+
+		global $wp_filter;
+
+		if( isset($wp_filter['shutdown']) )
+		{
+			$callbacks = array();
+
+			foreach( $wp_filter['shutdown']->callbacks as $priority => $fns )
+			{
+				foreach( $fns as $fn )
+				{
+					$f = $fn['function'];
+
+					if( is_array($f) )
+						$callbacks[] = $priority . ":" . (is_object($f[0]) ? get_class($f[0]) : $f[0]) . "::" . $f[1];
+					else if( is_string($f) )
+						$callbacks[] = $priority . ":" . $f;
+					else
+						$callbacks[] = $priority . ":" . (is_object($f) ? get_class($f) : "callable");
+				}
+			}
+
+			flashy_log("Shutdown callbacks: " . json_encode($callbacks));
+		}
+	}
+
+	function shutdown_probe_end()
+	{
+		if( !empty($this->actions) || !empty($this->hooks) )
+			flashy_log("Shutdown chain completed");
 	}
 
 	function load_flashy_hooks()
@@ -691,6 +743,9 @@ class wp_flashy
 	function run_flashy_actions()
 	{
 		$this->load_flashy_hooks();
+
+		if( flashy_diagnostics_enabled() && !empty($this->actions) )
+			flashy_log("Flushing actions: " . json_encode(array_keys($this->actions)));
 
 		$list_id = get_option('flashy_list_id');
 
@@ -765,6 +820,9 @@ class wp_flashy
 			flashy_log($e->getMessage(), true);
 			flashy_log($e->getTraceAsString(), true);
 		}
+
+		if( flashy_diagnostics_enabled() && !empty($this->actions) )
+			flashy_log("Flush complete");
 	}
 
 	public function getAction($var) {
@@ -2673,6 +2731,20 @@ function flashy_get_environment()
 	return false;
 }
 
+/**
+ * Shutdown diagnostics are active in dev/local environments, or on any site where the
+ * flashy_log_state option is turned on — so a customer site can be debugged without code changes.
+ */
+function flashy_diagnostics_enabled()
+{
+	static $enabled = null;
+
+	if( $enabled === null )
+		$enabled = flashy_get_environment() !== false || get_option('flashy_log_state') === 'true';
+
+	return $enabled;
+}
+
 function flashy_log($contents, $force = false)
 {
     if( get_option('flashy_log_state') === 'true' )
@@ -2683,14 +2755,20 @@ function flashy_log($contents, $force = false)
 
 	$log = apply_filters('flashy/get_info', 'path') . "/error.log";
 
-	$current = file_get_contents($log);
-
 	if( gettype($contents) == "array" || gettype($contents) == "object" )
 		$contents = json_encode($contents);
 
-	$current .= "[" . date('Y-m-d H:i:s') . "] " . $contents . "\n";
+	// stable per-request id so concurrent requests can be told apart in the log
+	static $request_id = null;
 
-	file_put_contents($log, $current);
+	if( $request_id === null )
+		$request_id = substr(md5(uniqid('', true)), 0, 6);
+
+	$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : php_sapi_name();
+
+	$line = "[" . date('Y-m-d H:i:s') . "][" . getmypid() . ":" . $request_id . "][" . $uri . "] " . $contents . "\n";
+
+	file_put_contents($log, $line, FILE_APPEND | LOCK_EX);
 }
 
 function flashy_log_reset()
@@ -2699,7 +2777,7 @@ function flashy_log_reset()
 
     $content = "[" . date('Y-m-d H:i:s') . "] Reset Log \n";
 
-    file_put_contents($log, $content);
+    file_put_contents($log, $content, LOCK_EX);
 }
 
 function flashy_dd($v)

@@ -89,6 +89,7 @@ class Flashy_Export extends WP_Background_Process {
                     "parent_id" => $product['parent_id'] !== $product['id'] ? $product['parent_id'] : 0,
                     "tags" => $product['tags'],
                     "sku" => $product['sku'],
+                    "gtin" => isset($product['gtin']) ? $product['gtin'] : '',
                     "created_at" => $product['created_at'],
                     "updated_at" => $product['updated_at']
 				];
@@ -241,7 +242,11 @@ class Flashy_Export extends WP_Background_Process {
 
         $prefix = ( isset($args['prefix']) ) ? $args['prefix'] : "";
 
-        $code = $this->getUniqueCode($prefix);
+        $code = $this->getUniqueCode(
+            $prefix,
+            isset($args['code_length']) ? (int) $args['code_length'] : 6,
+            isset($args['code_charset']) ? $args['code_charset'] : null
+        );
 
         $default = array(
             'coupon_code' => $code, // coupon string title.
@@ -261,11 +266,42 @@ class Flashy_Export extends WP_Background_Process {
             'product_categories' => '', // array of categories id's
             'exclude_product_categories' => '', // array of categories id's
             'exclude_sale_items' => true, // bool,
-            'description' => ''
+            'description' => '',
+            'contact' => null, // ['email' => ..., 'phone' => ...] restrict the coupon to matching store customers (contact-only coupons)
         );
 
         $merged = array_merge( $default, $args );
 
+        try {
+            return $this->saveCoupon( $merged );
+        }
+        catch( \Throwable $e ) {
+            return array(
+                "success" => false,
+                "error" => $e->getMessage(),
+                "exception" => get_class( $e ),
+                "environment" => $this->environment(),
+            );
+        }
+    }
+
+    /**
+     * Versions + supported args, so Flashy can tell whether a store runs a plugin that honours `contact` / `code_charset`.
+     */
+    private function environment()
+    {
+        global $woocommerce;
+
+        return array(
+            "woocommerce" => isset($woocommerce) ? $woocommerce->version : null,
+            "wordpress" => get_bloginfo( 'version' ),
+            "php" => phpversion(),
+            "supports" => array( "contact", "code_length", "code_charset", "description" ),
+        );
+    }
+
+    private function saveCoupon( $merged )
+    {
         $coupon = new WC_Coupon();
 
         // Add meta to coupon by ID
@@ -289,13 +325,82 @@ class Flashy_Export extends WP_Background_Process {
         $coupon->set_exclude_sale_items( $merged['exclude_sale_items'] );
         $coupon->set_description( $merged['description'] );
 
+        if( !empty($merged['contact']) && is_array($merged['contact']) ) {
+            $emails = $this->findCustomerEmails( $merged['contact'] );
+
+            // No matching customer in the store -> leave the coupon unrestricted
+            if( count($emails) > 0 ) {
+                $coupon->set_email_restrictions( $emails );
+            }
+        }
+
         // Create, publish and save coupon (data)
         $coupon->save();
 
+        if( !$coupon->get_id() ) {
+            throw new \RuntimeException( "WooCommerce did not persist the coupon" );
+        }
+
         return array(
             "data" => $merged['coupon_code'],
-            "success" => true
+            "success" => true,
+            "environment" => $this->environment(),
         );
+    }
+
+    /**
+     * Emails of every store customer matching the contact's email or phone.
+     * Empty when no customer exists, so the caller leaves the coupon unrestricted.
+     */
+    public function findCustomerEmails( $contact )
+    {
+        $email = isset($contact['email']) ? sanitize_email( strtolower( trim( $contact['email'] ) ) ) : '';
+        $phone = isset($contact['phone']) ? preg_replace( '/\D+/', '', (string) $contact['phone'] ) : '';
+
+        $users = array();
+
+        if( $email !== '' ) {
+            $by_email = get_user_by( 'email', $email );
+
+            if( $by_email ) {
+                $users[] = $by_email;
+            }
+
+            $users = array_merge( $users, get_users( array(
+                'meta_key' => 'billing_email',
+                'meta_value' => $email,
+                'meta_compare' => '=',
+                'number' => 50,
+                'fields' => 'all',
+            ) ) );
+        }
+
+        // Match on the last 9 digits so local (05x) and international (972 5x) formats both hit
+        if( strlen( $phone ) >= 9 ) {
+            $users = array_merge( $users, get_users( array(
+                'meta_key' => 'billing_phone',
+                'meta_value' => substr( $phone, -9 ),
+                'meta_compare' => 'LIKE',
+                'number' => 50,
+                'fields' => 'all',
+            ) ) );
+        }
+
+        $emails = array();
+
+        foreach( $users as $user ) {
+            $candidates = array( $user->user_email, get_user_meta( $user->ID, 'billing_email', true ) );
+
+            foreach( $candidates as $candidate ) {
+                $candidate = sanitize_email( strtolower( trim( (string) $candidate ) ) );
+
+                if( $candidate !== '' ) {
+                    $emails[] = $candidate;
+                }
+            }
+        }
+
+        return array_values( array_unique( $emails ) );
     }
 
     public function getProductCategories()
@@ -329,13 +434,44 @@ class Flashy_Export extends WP_Background_Process {
 		parent::complete();
 	}
 
-    private function getUniqueCode($prefix)
+    private function getUniqueCode($prefix, $length = 6, $charset = null)
     {
-        $code = $prefix . wp_generate_password(6, false);
+        $code = $prefix . $this->randomCode($length, $charset);
 
         if( !empty(wc_get_coupon_id_by_code($code)) )
         {
-            return $this->getUniqueCode($prefix);
+            return $this->getUniqueCode($prefix, $length, $charset);
+        }
+
+        return $code;
+    }
+
+    /**
+     * @param int $length 6..12
+     * @param string|null $charset numbers | letters | alphanumeric (null keeps the legacy wp_generate_password format)
+     */
+    private function randomCode($length = 6, $charset = null)
+    {
+        $length = min(12, max(6, (int) $length));
+
+        $pools = array(
+            'numbers' => '0123456789',
+            'letters' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            'alphanumeric' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+        );
+
+        if( $charset === null || !isset($pools[$charset]) )
+        {
+            return wp_generate_password($length, false);
+        }
+
+        $pool = $pools[$charset];
+
+        $code = '';
+
+        for( $i = 0; $i < $length; $i++ )
+        {
+            $code .= $pool[ wp_rand(0, strlen($pool) - 1) ];
         }
 
         return $code;

@@ -3,7 +3,7 @@
 Plugin Name: Wp Flashy Marketing Automation
 Plugin URI: https://flashy.app
 Description: Wordpress plugin for flashy.app to sync products, orders and customers and track events.
-Version: 2.0.14
+Version: 2.0.15
 Author: Flashy
 Author URI: https://flashy.app
 License: GPL
@@ -2766,7 +2766,10 @@ function flashy_log($contents, $force = false)
 
 	$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : php_sapi_name();
 
-	$line = "[" . date('Y-m-d H:i:s') . "][" . getmypid() . ":" . $request_id . "][" . $uri . "] " . $contents . "\n";
+	// getmypid() is listed in disable_functions on some hosts, calling it there is a fatal error
+	$pid = function_exists('getmypid') ? getmypid() : '-';
+
+	$line = "[" . date('Y-m-d H:i:s') . "][" . $pid . ":" . $request_id . "][" . $uri . "] " . $contents . "\n";
 
 	file_put_contents($log, $line, FILE_APPEND | LOCK_EX);
 }

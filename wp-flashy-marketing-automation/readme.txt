@@ -34,6 +34,9 @@ Add tracking pixels for - PageView, ViewContent, Add To Cart and Purchase, Purch
 = COLLECT MORE SUBSCRIBERS ON CHECK & SIGNUP PAGE =
 Add a checkbox on the pages you want to collect consent from your visitor who wants to accept marketing.
 
+= 2.0.15 =
+* Fix: Compatibility issue with some hosting environments
+
 = 2.0.14 =
 * New Feature: Contact-only coupons - restrict a generated coupon to a specific customer
 * New Feature: Control the length and characters of generated coupon codes
